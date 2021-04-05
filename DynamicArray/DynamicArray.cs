@@ -67,6 +67,14 @@ namespace DynamicArrays
             _arr[_len++] = elem;
         }
 
+        public void AddRange(T[] elements)
+        {
+            for (var i = 0; i < elements.Length; i++)
+            {
+                Add(elements[i]);
+            }
+        }
+
         // Removes an element at the specified index in this array.
         public T RemoveAt(int rmIndex)
         {
