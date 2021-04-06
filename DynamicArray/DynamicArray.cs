@@ -29,6 +29,11 @@ namespace DynamicArrays
             return _len;
         }
 
+        public int Capacity()
+        {
+            return _capacity;
+        }
+
         public bool IsEmpty()
         {
             return Size() == 0;
@@ -36,13 +41,13 @@ namespace DynamicArrays
 
         public T Get(int index)
         {
-            if (index >= _len || index < 0) throw new ArgumentOutOfRangeException();
+            if (index >= _len || index < 0) throw new IndexOutOfRangeException();
             return _arr[index];
         }
 
         public void Set(int index, T elem)
         {
-            if (index >= _len || index < 0) throw new ArgumentOutOfRangeException();
+            if (index >= _len || index < 0) throw new IndexOutOfRangeException();
             _arr[index] = elem;
         }
 
@@ -57,16 +62,22 @@ namespace DynamicArrays
             // Time to resize!
             if (_len + 1 >= _capacity)
             {
-                if (_capacity == 0) _capacity = 1;
-                else _capacity *= 2; // double the size
-                var newArr = new T[_capacity];
-                for (var i = 0; i < _len; i++) newArr[i] = _arr[i];
-                _arr = newArr; // arr has extra nulls padded
+                ResizeArray();
             }
 
             _arr[_len++] = elem;
         }
 
+        private void ResizeArray()
+        {
+            if (_capacity == 0) _capacity = 1;
+            else _capacity *= 2; // double the size
+            var newArr = new T[_capacity];
+            for (var i = 0; i < _len; i++) newArr[i] = _arr[i];
+            _arr = newArr; // arr has extra nulls padded
+        }
+
+        //This method can be improved, but for the simplicity it just calls add method 
         public void AddRange(T[] elements)
         {
             for (var i = 0; i < elements.Length; i++)
